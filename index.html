@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="th">
+<head><link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SHADOW</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    radial-gradient(circle at 15% 20%, #7b00ff55, transparent 30%),
+    radial-gradient(circle at 85% 80%, #ff003355, transparent 30%),
+    #050509;
+  color: white;
+}
+
+/* PANEL */
+
+.panel {
+  width: 360px;
+  max-width: 94%;
+  padding: 20px;
+  border-radius: 25px;
+
+  background: rgba(10, 8, 18, 0.95);
+
+  border: 1px solid #8a00ff88;
+
+  box-shadow:
+    0 0 15px #8a00ff66,
+    0 0 40px #ff003344;
+
+  backdrop-filter: blur(15px);
+}
+
+/* TITLE */
+
+.title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 3px;
+
+  background: linear-gradient(
+    90deg,
+    #7b00ff,
+    #c000ff,
+    #ff004c,
+    #ff0033
+  );
+
+  -webkit-background-clip: text;
+  color: transparent;
+
+  text-shadow: 0 0 20px #8a00ff55;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 11px;
+  margin-bottom: 20px;
+}
+
+/* OPTIONS */
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 13px;
+  margin: 9px 0;
+
+  border-radius: 15px;
+
+  background: linear-gradient(
+    90deg,
+    #151020,
+    #0d0c15
+  );
+
+  border: 1px solid #7b00ff33;
+
+  transition: .2s;
+}
+
+.option:hover {
+  border-color: #ff004c88;
+  box-shadow: 0 0 15px #ff004422;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+/* TOGGLE */
+
+.toggle {
+  min-width: 58px;
+  height: 29px;
+
+  border: none;
+  border-radius: 20px;
+
+  background: #292532;
+
+  color: #aaa;
+
+  font-weight: bold;
+  font-size: 11px;
+
+  cursor: pointer;
+
+  transition: .25s;
+}
+
+.toggle.active {
+  background: linear-gradient(
+    90deg,
+    #7b00ff,
+    #ff003c
+  );
+
+  color: white;
+
+  box-shadow:
+    0 0 10px #8a00ff,
+    0 0 18px #ff003355;
+}
+
+/* FOV */
+
+.slider-box {
+  margin-top: 15px;
+  padding: 15px;
+
+  border-radius: 15px;
+
+  background: #ffffff08;
+
+  border: 1px solid #7b00ff33;
+}
+
+.slider-title {
+  display: flex;
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+  font-weight: bold;
+}
+
+#fovValue {
+  color: #ff2860;
+}
+
+input[type="range"] {
+  width: 100%;
+  accent-color: #b000ff;
+}
+
+/* CONTROL BUTTONS */
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+
+  margin-top: 16px;
+}
+
+.control {
+  padding: 12px;
+
+  border: none;
+  border-radius: 12px;
+
+  color: white;
+
+  font-weight: bold;
+
+  background: linear-gradient(
+    90deg,
+    #5900aa,
+    #b000ff
+  );
+
+  cursor: pointer;
+
+  box-shadow: 0 0 12px #8a00ff44;
+}
+
+.control.red {
+  background: linear-gradient(
+    90deg,
+    #9b0030,
+    #ff003c
+  );
+}
+
+.control.gray {
+  background: #24202c;
+}
+
+.control:hover {
+  transform: scale(1.02);
+}
+
+/* STATUS */
+
+.status {
+  text-align: center;
+  margin-top: 16px;
+
+  font-size: 10px;
+  color: #666;
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="panel">
+
+  <div class="title">
+    SHADOW 🖤
+  </div>
+
+  <div class="subtitle">
+    FUTURISTIC CONTROL PANEL
+  </div>
+
+
+  <!-- OPTIONS -->
+
+  <div id="options"></div>
+
+
+  <!-- FOV -->
+
+  <div class="slider-box">
+
+    <div class="slider-title">
+      <span>ขอบเขตการเล็ง</span>
+      <span id="fovValue">50</span>
+    </div>
+
+    <input
+      id="fov"
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+    >
+
+  </div>
+
+
+  <!-- BUTTONS -->
+
+  <div class="controls">
+
+    <button
+      class="control"
+      onclick="turnAll(true)"
+    >
+      เปิดทั้งหมด
+    </button>
+
+    <button
+      class="control red"
+      onclick="turnAll(false)"
+    >
+      ปิดทั้งหมด
+    </button>
+
+    <button
+      class="control gray"
+      onclick="resetPanel()"
+    >
+      รีเซ็ต
+    </button>
+
+    <button
+      class="control"
+      onclick="showStatus()"
+    >
+      สถานะ
+    </button>
+
+  </div>
+
+
+  <div class="status" id="status">
+    SHADOW • UI DEMO
+  </div>
+
+</div>
+
+
+<script>
+
+/* รายการปุ่ม */
+
+const names = [
+
+  "ช่วยเล็ง",
+  "ล็อกหัว",
+  "เล็งเต็ม",
+  "ทั้งตัว",
+  "เฮดทริค",
+  "ลดแรงดีด",
+  "ล็อกเป้า",
+  "แสดงตำแหน่ง",
+  "เล็งนุ่ม",
+  "เรดาร์"
+
+];
+
+
+/* สร้างปุ่ม */
+
+const box = document.getElementById("options");
+
+
+names.forEach(name => {
+
+  const row = document.createElement("div");
+
+  row.className = "option";
+
+  row.innerHTML = `
+
+    <span class="name">
+      ${name}
+    </span>
+
+    <button class="toggle">
+      ปิด
+    </button>
+
+  `;
+
+
+  const button =
+    row.querySelector(".toggle");
+
+
+  button.onclick = () => {
+
+    button.classList.toggle("active");
+
+    if (
+      button.classList.contains("active")
+    ) {
+
+      button.textContent = "เปิด";
+
+    } else {
+
+      button.textContent = "ปิด";
+
+    }
+
+  };
+
+
+  box.appendChild(row);
+
+});
+
+
+/* FOV */
+
+const fov =
+  document.getElementById("fov");
+
+const fovValue =
+  document.getElementById("fovValue");
+
+
+fov.addEventListener("input", () => {
+
+  fovValue.textContent =
+    fov.value;
+
+});
+
+
+/* เปิด / ปิดทั้งหมด */
+
+function turnAll(state) {
+
+  document
+    .querySelectorAll(".toggle")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "active",
+        state
+      );
+
+      button.textContent =
+        state ? "เปิด" : "ปิด";
+
+    });
+
+}
+
+
+/* รีเซ็ต */
+
+function resetPanel() {
+
+  document
+    .querySelectorAll(".toggle")
+    .forEach(button => {
+
+      button.classList.remove(
+        "active"
+      );
+
+      button.textContent = "ปิด";
+
+    });
+
+
+  fov.value = 50;
+
+  fovValue.textContent = 50;
+
+  document.getElementById("status")
+    .textContent =
+    "SHADOW • RESET สำเร็จ";
+
+}
+
+
+/* สถานะ */
+
+function showStatus() {
+
+  const active =
+    document.querySelectorAll(
+      ".toggle.active"
+    ).length;
+
+  document.getElementById("status")
+    .textContent =
+    "เปิดอยู่ " + active +
+    " / " + names.length +
+    " รายการ";
+
+}
+
+</script>
+
+</body>
+</html>
